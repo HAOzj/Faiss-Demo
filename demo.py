@@ -14,10 +14,10 @@ from utils import print_run_time
 d = 64
 
 # 待索引向量数量
-nv = 10000000
+nv = 10000
 
 # 查询向量数量
-nq = 10000
+nq = 100
 
 # 随机种子确定
 np.random.seed(1234)
@@ -97,7 +97,7 @@ def test_ivf(nprobe_list, k=4, queries=xq):
 
 def main():
     test_brutal_force()
-    test_ivf(nprobe_list=[1, 5, 10, 50, 100])
+    test_ivf(nprobe_list=[1, 5])
 
 
 if __name__ == "__main__":
