@@ -20,7 +20,7 @@ nlist = 100
 m = 8
 
 # 字节数量
-cnt_bits = 8
+cnt_bits_list = [8, 16, 32, 64]
 
 # 待索引向量数量
 ntotal = 1000000
@@ -47,9 +47,9 @@ xq = l2_normalizer.transform(xq)
 metric = faiss.METRIC_INNER_PRODUCT
 
 # 倒排索引和PQ的参数
-fac_str = f"IVF{nlist},PQ{cnt_bits}"
+fac_str_list = [f"IVF{nlist},PQ{cnt_bits}" for cnt_bits in cnt_bits_list]
 
-show_flag = False
+show_flag = True
 print(f"ntotal={ntotal}, nq={xq.shape[0]}")
 
 
@@ -112,9 +112,9 @@ def test_ivf(nprobe_list, k=4, queries=xq):
 
 
 @print_run_time
-def test_ivf_pq(nprobe_list, k=4, queries=xq):
+def test_ivf_pq(nprobe_list, fac_str, k=4, queries=xq):
     print("\n------开始测试IVF+PQ(内积)------")
-
+    print(f"fac_str is {fac_str}")
     # 量化器索引
     # coarse_quantizer = faiss.IndexFlatIP(d)
 
@@ -144,7 +144,8 @@ def main():
         nprobe_list = nprobe_list[:2]
     test_brutal_force()
     test_ivf(nprobe_list)
-    test_ivf_pq(nprobe_list)
+    for fac_str in fac_str_list:
+        test_ivf_pq(nprobe_list, fac_str)
 
 
 if __name__ == "__main__":
